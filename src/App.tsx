@@ -328,6 +328,14 @@ function CurrentView(): ReactNode {
 }
 
 export default function App() {
+  if (typeof window !== "undefined") {
+    (window as unknown as { __stores?: unknown }).__stores = {
+      usePlayer,
+      useLibrary,
+      useSettings,
+      useUI,
+    };
+  }
   const viewName = useUI((s) => s.view.name);
   const viewReloadNonce = useUI((s) => s.viewReloadNonce);
   const pendingScroll = useUI((s) => s.pendingScroll);
