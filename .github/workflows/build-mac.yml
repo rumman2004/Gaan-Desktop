@@ -47,6 +47,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Generate build icons
+        run: npm run icon
+
       - name: Build renderer + electron main
         run: npm run build
         env:
