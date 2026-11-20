@@ -1,0 +1,282 @@
+/*
+ * GAAN's launch intro (index.html's #intro; src/intro.ts ends it).
+ * Adapted from third-party code under the Apache License 2.0 (see NOTICE).
+ *
+ * Timeline (s) — public/intro-light.js is authored against the same clock:
+ *   0.00-0.60  glass window; badge springs in (intro-pop); spark ignites; mark fades in
+ *   0.40-1.40  ripple rings + comet trace (canvas); logo sheen sweeps 1.00-1.60
+ *   0.50-0.70  glass darkens into #0a0a0a
+ *   1.40-2.00  badge slides left (intro-settle)
+ *   1.55-2.20  "Gaan" letters rise in, staggered (intro-rise)
+ *   2.40+      idle breathe until src/intro.ts hands over and flies the badge to the top bar
+ */
+
+:root {
+  --intro-gap: 20px;
+  --intro-word: 168px;
+  --intro-tile: 96px;
+  --intro-mark: 64px;
+  /* Spring-like curves: overshoot, soft ease-out, ease-in-out */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+#intro {
+  display: none;
+}
+
+/* Glass shows through until the intro has played (intro.ts then removes intro-glass). index.html paints
+   the body inline, so this needs !important. */
+html.intro-glass body {
+  background: transparent !important;
+}
+
+html.intro #intro {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: grid;
+  place-items: center;
+  -webkit-app-region: drag;
+}
+
+/* The window's own ground fades in over the glass: opacity only, so nothing redraws. 99.9%, not 100%,
+   because Chromium skips drawing whatever a fully opaque layer covers and the app is drawn under it. */
+html.intro #intro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: #0a0a0a;
+  opacity: 0;
+  pointer-events: none;
+  animation: intro-dark 200ms ease 0.5s both;
+}
+
+/* App stays hidden under the intro until handed over. */
+html.intro-wait #root {
+  opacity: 0;
+}
+
+/* Drawn but unseen (0.1% under the dark ground) so the glide needn't wait on the app's first paint. */
+html.intro-wait.intro-warm #root {
+  opacity: 1;
+}
+
+/* intro.ts's probe dot, under the dark ground. */
+.intro-probe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -2;
+  color: #0a0a0a;
+  pointer-events: none;
+}
+
+/* Handed over: the app underneath takes clicks and window drags. */
+html.intro:not(.intro-wait) #intro {
+  pointer-events: none;
+  -webkit-app-region: no-drag;
+}
+
+.intro-lockup {
+  --gap: var(--intro-gap);
+  --word: var(--intro-word);
+  display: flex;
+  align-items: center;
+}
+
+/* How far right of its place the badge sits; intro-settle eases it to 0. */
+@property --slide {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* Easing --slide (read by `translate`) instead of animating transform/left: a transform animation on the
+   badge makes Chromium rasterise it and the canvas light show at low resolution, and `left` snaps to
+   whole pixels. This stays sharp and glides between pixels. */
+.intro-tile {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--intro-tile);
+  height: var(--intro-tile);
+  translate: var(--slide) 0;
+  animation: intro-settle 0.6s linear 1.4s both;
+}
+
+/* The badge: 24px squircle, black -> graphite, 10% white border gradient, soft shadow, spring pop. */
+.intro-tile::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 24px;
+  background: linear-gradient(180deg, #000000 0%, #151718 100%) border-box;
+  box-shadow:
+    0 20px 25px -5px rgb(0 0 0 / 0.2),
+    0 8px 10px -6px rgb(0 0 0 / 0.2);
+  animation: intro-pop 0.6s var(--ease-spring) 0s both;
+}
+
+/* Idle halo behind the badge: fades up as the lockup forms, then breathes. */
+.intro-tile::after {
+  content: "";
+  position: absolute;
+  inset: -36px;
+  z-index: -2;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 70 110 / 0.34), rgb(255 150 60 / 0.12) 55%, transparent 100%);
+  pointer-events: none;
+  animation:
+    intro-halo-in 0.7s ease-out 1.5s both,
+    intro-halo-breathe 2.2s ease-in-out 2.4s infinite;
+}
+
+.intro-word {
+  position: relative;
+  display: grid;
+  padding-left: var(--gap);
+}
+
+/* Four slices of the wordmark stacked in one grid cell; each clips to its own glyph. */
+.intro-l {
+  grid-area: 1 / 1;
+  display: block;
+  width: var(--word);
+  height: 56px;
+  overflow: visible;
+  animation: intro-rise 0.65s var(--ease-out) calc(1.55s + var(--i) * 0.06s) both;
+}
+.intro-l:nth-child(1) { clip-path: inset(0 66.8% 0 0); }
+.intro-l:nth-child(2) { clip-path: inset(0 47.8% 0 33.2%); }
+.intro-l:nth-child(3) { clip-path: inset(0 28.3% 0 52.2%); }
+.intro-l:nth-child(4) { clip-path: inset(0 0 0 71.7%); }
+
+/* Canvas: 240px, centred on the badge (light show drawn by public/intro-light.js). */
+.intro-light {
+  position: absolute;
+  top: -72px;
+  left: -72px;
+  width: 240px;
+  height: 240px;
+  pointer-events: none;
+}
+
+/* The logo mark: eases in as the spark ignites, then breathes while the app loads. */
+.intro-mark {
+  position: relative;
+  width: var(--intro-mark);
+  height: var(--intro-mark);
+  overflow: visible;
+  animation:
+    intro-mark-in 0.7s var(--ease-spring) 0.18s both,
+    intro-breathe 2.2s ease-in-out 2.4s infinite;
+}
+
+/* Chromatic sheen: a moving gradient band, masked to the logo's own silhouette (--logo set inline in
+   index.html so the URL resolves against the page). */
+.intro-sheen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--intro-mark);
+  height: var(--intro-mark);
+  margin: calc(var(--intro-mark) / -2) 0 0 calc(var(--intro-mark) / -2);
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 36%,
+    rgb(255 225 140 / 0.5) 44%,
+    rgb(255 255 255 / 0.95) 50%,
+    rgb(255 110 200 / 0.55) 56%,
+    transparent 64%
+  );
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  -webkit-mask-image: var(--logo);
+  mask-image: var(--logo);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  opacity: 0;
+  animation: intro-sheen 0.6s var(--ease-in-out) 1s both;
+}
+
+@keyframes intro-pop {
+  0%   { opacity: 0; transform: scale(0.72); }
+  38%  { opacity: 1; transform: scale(1.06); }
+  62%  { transform: scale(0.985); }
+  82%  { transform: scale(1.008); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes intro-mark-in {
+  from { opacity: 0; transform: scale(0.82); filter: blur(6px); }
+  to   { opacity: 1; transform: scale(1);    filter: blur(0); }
+}
+
+@keyframes intro-dark {
+  to { opacity: 0.999; }
+}
+
+/* Ease-in-out cubic as two halves: starts half the lockup's width right of place, lands at 0. */
+@keyframes intro-settle {
+  from {
+    --slide: calc((var(--gap) + var(--word)) / 2);
+    animation-timing-function: cubic-bezier(0.32, 0, 0.67, 0);
+  }
+  50% {
+    --slide: calc((var(--gap) + var(--word)) / 4);
+    animation-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+  }
+  to {
+    --slide: 0px;
+  }
+}
+
+@keyframes intro-rise {
+  from { opacity: 0; translate: 0 22px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes intro-sheen {
+  0%   { opacity: 1; background-position: 100% 0; }
+  100% { opacity: 1; background-position: 0% 0; }
+}
+
+@keyframes intro-halo-in {
+  from { opacity: 0; }
+  to   { opacity: 0.55; }
+}
+
+@keyframes intro-halo-breathe {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 0.2; }
+}
+
+@keyframes intro-breathe {
+  50% { opacity: 0.8; }
+}
+
+/* Reduced motion: the logo shows as it ends — no pop, slide, rise, sheen or breathing, and no light show
+   (public/intro.js). The darkening over the glass stays, a fade rather than a move. */
+@media (prefers-reduced-motion: reduce) {
+  #intro *,
+  #intro *::before,
+  #intro *::after {
+    animation: none;
+  }
+  .intro-sheen,
+  .intro-tile::after {
+    display: none;
+  }
+}

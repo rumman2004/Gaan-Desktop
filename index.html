@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="referrer" content="no-referrer" />
+    <!-- file: documents don't match CSP 'self', hence the explicit file: sources -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' file:; style-src 'self' 'unsafe-inline' file:; img-src 'self' data: blob: https: localart:; media-src 'self' blob: https: http://127.0.0.1:* file:; connect-src 'self' https: http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:*; font-src 'self' data: file:; object-src 'none'; base-uri 'self'"
+    />
+    <title>Gaan</title>
+    <script src="./intro-sound.js"></script>
+    <script src="./intro.js"></script>
+    <link rel="stylesheet" href="/src/intro.css" />
+    <script type="module" src="/src/main.tsx"></script>
+  </head>
+  <body style="background:#0a0a0a">
+    <div id="root"></div>
+    <div id="intro" role="status" aria-label="Opening Gaan">
+      <div class="intro-lockup">
+        <div class="intro-tile">
+          <!-- Light show (rings, spark, comet trace) is drawn here by public/intro-light.js in a worker -->
+          <canvas class="intro-light" width="240" height="240" data-size="240" aria-hidden="true"></canvas>
+          <!-- The mark: the Gaan logo -->
+          <svg class="intro-mark" viewBox="0 0 1254 1254" aria-hidden="true">
+            <image width="1254" height="1254" href="./brand/gaan-logo.png" />
+          </svg>
+          <!-- Chromatic sheen: a gradient band masked to the logo's own silhouette, so it only lights the mark -->
+          <div class="intro-sheen" style="--logo: url(./brand/gaan-logo.png)" aria-hidden="true"></div>
+        </div>
+        <!-- Wordmark: four glyph slices of gaan-text.png so each letter can rise on its own stagger (--i) -->
+        <span class="intro-word" aria-hidden="true">
+          <svg class="intro-l" viewBox="0 0 2172 724" style="--i: 0"><image width="2172" height="724" href="./brand/gaan-text.png" /></svg>
+          <svg class="intro-l" viewBox="0 0 2172 724" style="--i: 1"><image width="2172" height="724" href="./brand/gaan-text.png" /></svg>
+          <svg class="intro-l" viewBox="0 0 2172 724" style="--i: 2"><image width="2172" height="724" href="./brand/gaan-text.png" /></svg>
+          <svg class="intro-l" viewBox="0 0 2172 724" style="--i: 3"><image width="2172" height="724" href="./brand/gaan-text.png" /></svg>
+        </span>
+      </div>
+    </div>
+  </body>
+</html>
