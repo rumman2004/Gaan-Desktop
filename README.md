@@ -54,8 +54,8 @@ GAAN is a modern desktop music player for Windows and macOS, built with Electron
     <td align="center"><b>💖 Rose Velvet (Pookie)</b></td>
   </tr>
   <tr>
-    <td><img src="docs/screenshots/theme-olive.jpg" alt="Olive Green and Beige Cream theme" width="480"></td>
-    <td><img src="docs/screenshots/theme-pookie.jpg" alt="Rose Velvet and Pookie theme" width="480"></td>
+    <td><img src="docs/screenshots/theme-olive.png" alt="Olive Green and Beige Cream theme" width="480"></td>
+    <td><img src="docs/screenshots/theme-pookie.png" alt="Rose Velvet and Pookie theme" width="480"></td>
   </tr>
 </table>
 
@@ -67,23 +67,47 @@ GAAN is a modern desktop music player for Windows and macOS, built with Electron
 ![GAAN appearance settings showing clean theme dropdown with Lucide icons](docs/screenshots/settings-appearance.jpg)
 
 ### Fullscreen Cinematic View
-![GAAN fullscreen now-playing view with album artwork, audio visualizer and word-synced lyrics](docs/screenshots/fullscreen.jpg)
+![GAAN fullscreen now-playing view with album artwork, audio visualizer and word-synced lyrics](docs/screenshots/fullscreen.png)
 
 ### Synchronized Lyrics
-![GAAN synchronized lyrics interface with the current word highlighted](docs/screenshots/lyrics.jpg)
+![GAAN synchronized lyrics interface with the current word highlighted](docs/screenshots/lyrics.png)
 
 ### Artist & Album Pages
-![GAAN artist page with top songs, play controls and the persistent player bar](docs/screenshots/artist.jpg)
+![GAAN artist page with top songs, play controls and the persistent player bar](docs/screenshots/artist.png)
 
 ### Mini Player (Picture-in-Picture)
-![GAAN mini player picture-in-picture window floating over the desktop](docs/screenshots/miniplayer.jpg)
+![GAAN mini player picture-in-picture window floating over the desktop](docs/screenshots/miniplayer.png)
 
 ### Queue & Now Playing
-![GAAN queue panel showing now playing and next up tracks](docs/screenshots/queue.jpg)
+![GAAN queue panel showing now playing and next up tracks](docs/screenshots/queue.png)
+
+### Music Library & Local Files
+<table>
+  <tr>
+    <td align="center"><b>Your Library</b></td>
+    <td align="center"><b>Local Music Folder</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/library.png" alt="Library" width="480"></td>
+    <td><img src="docs/screenshots/local-music.png" alt="Local Music" width="480"></td>
+  </tr>
+</table>
+
+### Offline Downloads & Search
+<table>
+  <tr>
+    <td align="center"><b>Downloads</b></td>
+    <td align="center"><b>Search</b></td>
+  </tr>
+  <tr>
+    <td><img src="docs/screenshots/downloads.png" alt="Downloads" width="480"></td>
+    <td><img src="docs/screenshots/search.png" alt="Search" width="480"></td>
+  </tr>
+</table>
 
 ### Replay Listening Stats
-![GAAN Replay page: minutes listened, plays, top artist and streak](docs/screenshots/replay.jpg)
-<p align="center"><img src="docs/screenshots/replay-card.jpg" alt="GAAN Replay story card" width="300"></p>
+![GAAN Replay page: minutes listened, plays, top artist and streak](docs/screenshots/replay.png)
+<p align="center"><img src="docs/screenshots/replay-card.png" alt="GAAN Replay story card" width="300"></p>
 
 ---
 
