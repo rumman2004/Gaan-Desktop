@@ -9,7 +9,7 @@
 |---|---|
 | `README.md` | Completely rewritten around real screenshots and verified features |
 | `CONTRIBUTING.md` | New — dev setup, verified commands, bug-report and PR guidance |
-| `docs/screenshots/*.png` | New — 10 screenshots captured from the running app |
+| `docs/screenshots/*.{png,jpg}` | New — screenshots captured from the running app |
 | GitHub repo description | Updated via `gh` |
 | GitHub topics | Set: `music-player`, `desktop-app`, `electron`, `react`, `typescript`, `windows`, `youtube-music`, `lyrics`, `playlist`, `open-source` |
 
@@ -30,7 +30,7 @@ Captured interactively from the live GAAN app (Electron instance running this re
 | `library.png` | Your Library: Playlists / Liked / Downloaded filters, Play all / Shuffle |
 | `local-music.png` | Local library: 204 imported songs, albums/artists counts, file search |
 | `downloads.png` | Downloads view: saved track, status, Open folder |
-| `settings.png` | Settings: lyrics, local music, appearance, Replay sections |
+| `settings.jpg` | Settings: lyrics, local music, appearance, Replay sections |
 
 **Privacy handling:** screenshots were inspected during capture. A first local-music capture showed personal folder paths (`D:\Music\...`) and was discarded and re-taken via the "All songs" view. No emails, account IDs, tokens, or private paths appear in any shipped screenshot (session was in guest mode).
 
@@ -116,7 +116,7 @@ No legality claims were added; the "use responsibly and in accordance with the t
 
 ### Screenshot files used (11)
 
-`home.png` (hero) · `artist.png` · `fullscreen.png` · `miniplayer.png` · `lyrics.png` · `search.png` · `queue.png` · `library.png` · `local-music.png` · `downloads.png` · `settings.png` — all captured from the running application; none generated or mocked.
+`home.png` (hero) · `artist.png` · `fullscreen.png` · `miniplayer.png` · `lyrics.png` · `search.png` · `queue.png` · `library.png` · `local-music.png` · `downloads.png` · `settings.jpg` — all captured from the running application; none generated or mocked.
 
 ### Still needs manual action
 
@@ -130,9 +130,9 @@ At the owner's request, three of my captured screenshots were replaced with the 
 | Slot | Old file | New file | Source |
 |---|---|---|---|
 | Hero (under `# GAAN`) | `home.png` (my capture) | `home.png` — "Good night" home with Jump back in | Owner's screenshot |
-| Mini player section | `miniplayer.png` | `miniplayer.jpg` (519 KB, converted from 6.8 MB PNG — photographic desktop wallpaper) | Owner's screenshot: PiP window over the desktop |
+| Mini player section | `miniplayer.png` | `miniplayer.png` (current PNG asset) | Owner's screenshot: PiP window over the desktop |
 | Local music section | `local-music.png` (my "All songs" capture) | `local-music.png` — ENGLISH folder view | Owner's screenshot |
 
 - Old captures remain recoverable in git history; alt texts updated to match the new imagery.
 - Note: the owner-selected local-music screenshot visibly shows the imported folder path (`D:\Music\ENGLISH — Scanned Sep 28`); owner's choice, kept as provided.
-- Same-day follow-up: the mini player shot was replaced again with the owner's later capture (GAAN PiP over the owner's Batman desktop wallpaper, playing "Sailor Song" — Gigi Perez); 2 MB PNG → 146 KB JPEG at 1920px.
+- Same-day follow-up: the mini player shot was replaced again with the owner's later capture (GAAN PiP over the owner's Batman desktop wallpaper, playing "Sailor Song" — Gigi Perez). The current tracked file is `docs/screenshots/miniplayer.png`.

@@ -1,6 +1,6 @@
 # GAAN: Free, Open-Source Spotify Alternative with AI Recommendations for Windows & macOS
 
-![GAAN YouTube Music desktop app for Windows and macOS — home feed with Jump back in, library sidebar, now-playing panel and player bar](docs/screenshots/home.jpg)
+![GAAN YouTube Music desktop app for Windows and macOS — home feed with Jump back in, library sidebar, now-playing panel and player bar](docs/screenshots/home.png)
 
 **GAAN is a free, open-source music player for Windows and macOS: the YouTube Music catalog and your own local files in one app, with no ads, no subscription, word-synced lyrics, aesthetic themes, and AI-powered recommendations.** Bring your Spotify playlists over, listen together with friends in Rooms, customize your look with designer themes, and enjoy AI smart shuffle powered by Gemini, Groq, Cohere, and OpenAI.
 
@@ -40,7 +40,7 @@ GAAN is a modern desktop music player for Windows and macOS, built with Electron
 ## Screenshots
 
 ### Main Player & Home
-![GAAN home feed with Jump back in, library sidebar, now-playing panel and player bar](docs/screenshots/home.jpg)
+![GAAN home feed with Jump back in, library sidebar, now-playing panel and player bar](docs/screenshots/home.png)
 
 ### AI Playlist Recommendations & Shuffle
 ![GAAN playlist view showing 5 AI recommended songs with shuffle and instant add](docs/screenshots/ai-playlist.jpg)
