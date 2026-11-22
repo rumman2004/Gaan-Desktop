@@ -1,45 +1,115 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
-  <head>
-    <script>
-      (() => {
-        try {
-          const preference = localStorage.getItem('gaan_theme_preference');
-          const theme = preference === 'dark' ? 'dark' : 'light';
-          document.documentElement.dataset.theme = theme;
-          document.documentElement.classList.toggle('dark', theme === 'dark');
-          document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#090909' : '#ffffff');
-        } catch {
-          document.documentElement.dataset.theme = 'light';
-          document.documentElement.classList.remove('dark');
-        }
-      })();
+
+<head>
+  <script>
+    (() => {
+      try {
+        const preference = localStorage.getItem('gaan_theme_preference');
+        const theme = preference === 'dark' ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+        document.documentElement.classList.toggle('dark', theme === 'dark');
+        document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#090909' : '#ffffff');
+      } catch {
+        document.documentElement.dataset.theme = 'light';
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/png" href="/brand/gaan-icon.png" />
+  <link rel="apple-touch-icon" href="/brand/gaan-icon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="application-name" content="Gaan" />
+  <title>Gaan — Open-Source Music Player for Desktop &amp; Android</title>
+  <meta name="description"
+    content="A free, open-source music player for Windows, macOS and Android. Stream online music, play local files, manage playlists and follow synced lyrics, with no ads." />
+  <link rel="canonical" href="https://gaan.website/" />
+
+  <!-- Open Graph and social previews -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Gaan" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:url" content="https://gaan.website/" />
+  <meta property="og:title" content="Gaan — Open-Source Music Player for Desktop &amp; Android" />
+  <meta property="og:description"
+    content="Stream online music, play your local collection and follow synced lyrics in one free, open-source player. Available for Windows, macOS and Android." />
+  <meta property="og:image" content="https://gaan.website/brand/SEO.jpg" />
+  <meta property="og:image:secure_url" content="https://gaan.website/brand/SEO.jpg" />
+  <meta property="og:image:type" content="image/jpeg" />
+  <meta property="og:image:width" content="1280" />
+  <meta property="og:image:height" content="640" />
+  <meta property="og:image:alt" content="Gaan, a free open-source music player for desktop and Android" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Gaan — Open-Source Music Player for Desktop &amp; Android" />
+  <meta name="twitter:description"
+    content="Stream online music, play your local collection and follow synced lyrics in one free, open-source player. Available for Windows, macOS and Android." />
+  <meta name="twitter:image" content="https://gaan.website/brand/SEO.jpg" />
+  <meta name="twitter:image:alt" content="Gaan, a free open-source music player for desktop and Android" />
+
+  <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://gaan.website/#website",
+            "url": "https://gaan.website/",
+            "name": "Gaan",
+            "description": "The official website for Gaan, a free open-source music player for desktop and Android.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://gaan.website/#organization",
+            "name": "Gaan",
+            "url": "https://gaan.website/",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://gaan.website/brand/gaan-logo.png"
+            },
+            "sameAs": [
+              "https://github.com/rumman2004/Gaan-Desktop",
+              "https://github.com/rumman2004/Gaan"
+            ]
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://gaan.website/#software",
+            "name": "Gaan",
+            "url": "https://gaan.website/",
+            "description": "A free, open-source music player for Windows, macOS and Android, bringing online music, local files, playlists and synced lyrics together.",
+            "applicationCategory": "MultimediaApplication",
+            "operatingSystem": "Windows 10 or later, macOS 12 or later, Android 8 or later",
+            "image": "https://gaan.website/brand/SEO.jpg",
+            "license": "https://www.gnu.org/licenses/gpl-3.0.html",
+            "isAccessibleForFree": true,
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD",
+              "url": "https://gaan.website/#downloads"
+            },
+            "publisher": {
+              "@id": "https://gaan.website/#organization"
+            }
+          }
+        ]
+      }
     </script>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/brand/gaan-icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#ffffff" />
-    <title>Gaan — Your music. Your way. Without limits.</title>
-    <meta name="description" content="A free, open-source music player for YouTube Music, your own library, synced lyrics, and listening on desktop or Android." />
-    <meta name="keywords" content="music player, spotify alternative, youtube music desktop, open source music player, synced lyrics, ai music shuffle, electron music, gaan desktop" />
-    
-    <!-- Open Graph / Social -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Gaan — All your music, one space" />
-    <meta property="og:description" content="YouTube Music, your own collection, and the details that make listening yours." />
-    <meta property="og:image" content="/brand/SEO.jpg" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Gaan — All your music, one space" />
-    <meta name="twitter:description" content="YouTube Music, your own collection, and the details that make listening yours." />
-    <meta name="twitter:image" content="/brand/SEO.jpg" />
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

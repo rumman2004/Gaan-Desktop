@@ -74,8 +74,12 @@ export function ScreenshotGallery({ className }: { className?: string }) {
     return [...seen];
   }, [items]);
 
+  const isFirstTab = useRef(true);
   useEffect(() => {
-    tabRefs.current[active.category]?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+    if (isFirstTab.current) {
+      isFirstTab.current = false;
+      return;
+    }
   }, [active.category]);
 
   const jumpTo = (i: number) => setJump((prev) => ({ index: i, id: (prev?.id ?? 0) + 1 }));

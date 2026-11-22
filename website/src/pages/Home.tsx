@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navbar } from "../components/shared/Navbar";
 import { Footer } from "../components/shared/Footer";
 
@@ -17,6 +17,17 @@ import { FAQSection } from "../components/sections/FAQSection";
 type Platform = "windows" | "mac" | "android" | "other";
 
 export function Home({ detectedOS }: { detectedOS: Platform }) {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if ("scrollRestoration" in window.history) {
+        window.history.scrollRestoration = "manual";
+      }
+      if (!window.location.hash) {
+        window.scrollTo(0, 0);
+      }
+    }
+  }, []);
+
   const downloadPlatform =
     detectedOS === "windows" || detectedOS === "mac" || detectedOS === "android"
       ? detectedOS

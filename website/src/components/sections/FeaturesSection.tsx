@@ -528,9 +528,12 @@ export function FeaturesSection() {
     };
 
     move(!isFirstFilter.current);
-    // keep the chosen pill centred in the scrolling row (skip on first paint so the page doesn't jump)
-    if (!isFirstFilter.current) {
-      pillRefs.current[active]?.scrollIntoView?.({ inline: "center", block: "nearest", behavior: "smooth" });
+    // keep the chosen pill centred in the scrolling row WITHOUT scrolling the window
+    const track = trackRef.current;
+    const btn = pillRefs.current[active];
+    if (track && btn && !isFirstFilter.current) {
+      const targetLeft = btn.offsetLeft - track.offsetWidth / 2 + btn.offsetWidth / 2;
+      track.scrollTo({ left: targetLeft, behavior: prefersReducedMotion() ? "auto" : "smooth" });
     }
 
     const onResize = () => move(false);
@@ -539,28 +542,11 @@ export function FeaturesSection() {
     return () => window.removeEventListener("resize", onResize);
   }, [active]);
 
-  /* ── 3. After a filter change: bring results into view, then re-animate cards ── */
+  /* ── 3. After a filter change: re-animate cards ── */
   useEffect(() => {
     if (isFirstFilter.current) {
       isFirstFilter.current = false;
       return;
-    }
-
-    // On tablet/phone the pill bar is sticky and the list is long, so make sure
-    // the results start just below it instead of leaving the reader mid-page.
-    const root = rootRef.current;
-    const groups = groupsRef.current;
-    if (root && groups && window.innerWidth <= 1100) {
-      const stickyTop = parseInt(getComputedStyle(root).getPropertyValue("--fs-sticky-top"), 10) || 0;
-      const barH = filtersRef.current?.offsetHeight ?? 0;
-      const limit = stickyTop + barH + 12;
-      const top = groups.getBoundingClientRect().top;
-      if (top < limit) {
-        window.scrollTo({
-          top: window.scrollY + top - limit,
-          behavior: prefersReducedMotion() ? "auto" : "smooth",
-        });
-      }
     }
 
     if (prefersReducedMotion()) return;

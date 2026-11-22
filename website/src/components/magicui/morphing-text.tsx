@@ -3,17 +3,26 @@
 import { useCallback, useEffect, useId, useMemo, useRef } from "react";
 import { cn } from "../../lib/utils";
 
-const morphTime = 0.9;
-const cooldownTime = 2.1;
-
 export interface MorphingTextProps {
   className?: string;
   texts: string[];
   /** Set to false to keep the text static. */
   animate?: boolean;
+  /** Seconds used to morph from one phrase into the next. */
+  morphDuration?: number;
+  /** Seconds each phrase remains readable before the next morph starts. */
+  holdDuration?: number;
 }
 
-export function MorphingText({ texts, className, animate = true }: MorphingTextProps) {
+const SEPARATOR = "\u0000";
+
+export function MorphingText({
+  texts,
+  className,
+  animate = true,
+  morphDuration = 1.2,
+  holdDuration = 4.2,
+}: MorphingTextProps) {
   const textIndexRef = useRef(0);
   const morphRef = useRef(0);
   const cooldownRef = useRef(0);
@@ -21,48 +30,67 @@ export function MorphingText({ texts, className, animate = true }: MorphingTextP
   const text1Ref = useRef<HTMLSpanElement>(null);
   const text2Ref = useRef<HTMLSpanElement>(null);
   const filterId = `morph-threshold-${useId().replace(/:/g, "")}`;
-  const phrases = useMemo(() => texts.filter((text) => text.trim().length > 0), [texts]);
-  const longestText = phrases.reduce((longest, text) =>
-    text.length > longest.length ? text : longest, phrases[0] ?? "");
 
-  const setStyles = useCallback((fraction: number) => {
-    const current1 = text1Ref.current;
-    const current2 = text2Ref.current;
-    if (!current1 || !current2 || phrases.length === 0) return;
+  // Depend on the phrase contents, not the array identity. Parents often pass a
+  // new array literal on every render, which would otherwise restart the
+  // animation from the first phrase each time they re-render.
+  const textsKey = texts.join(SEPARATOR);
+  const phrases = useMemo(
+    () => textsKey.split(SEPARATOR).filter((text) => text.trim().length > 0),
+    [textsKey],
+  );
+  const longestText = phrases.reduce(
+    (longest, text) => (text.length > longest.length ? text : longest),
+    phrases[0] ?? "",
+  );
 
-    const progress = Math.max(0.0001, Math.min(1, fraction));
-    const inverse = Math.max(0.0001, 1 - progress);
-    current2.style.filter = `blur(${Math.min(8 / progress - 8, 100)}px)`;
-    current2.style.opacity = `${Math.pow(progress, 0.4) * 100}%`;
-    current1.style.filter = `blur(${Math.min(8 / inverse - 8, 100)}px)`;
-    current1.style.opacity = `${Math.pow(inverse, 0.4) * 100}%`;
-    current1.textContent = phrases[textIndexRef.current % phrases.length];
-    current2.textContent = phrases[(textIndexRef.current + 1) % phrases.length];
-  }, [phrases]);
+  const setStyles = useCallback(
+    (fraction: number) => {
+      const current1 = text1Ref.current;
+      const current2 = text2Ref.current;
+      if (!current1 || !current2 || phrases.length === 0) return;
+
+      const progress = Math.max(0.0001, Math.min(1, fraction));
+      const inverse = Math.max(0.0001, 1 - progress);
+      current2.style.filter = `blur(${Math.min(8 / progress - 8, 100)}px)`;
+      current2.style.opacity = `${Math.pow(progress, 0.4) * 100}%`;
+      current1.style.filter = `blur(${Math.min(8 / inverse - 8, 100)}px)`;
+      current1.style.opacity = `${Math.pow(inverse, 0.4) * 100}%`;
+      current1.textContent = phrases[textIndexRef.current % phrases.length];
+      current2.textContent = phrases[(textIndexRef.current + 1) % phrases.length];
+    },
+    [phrases],
+  );
 
   const doMorph = useCallback(() => {
     morphRef.current -= cooldownRef.current;
     cooldownRef.current = 0;
-    let progress = morphRef.current / morphTime;
+    let progress = morphRef.current / morphDuration;
     if (progress >= 1) {
-      cooldownRef.current = cooldownTime;
+      cooldownRef.current = holdDuration;
       progress = 1;
     }
     setStyles(progress);
+    // The morph just finished: the phrase that faded in is now the current one.
     if (progress === 1) textIndexRef.current++;
-  }, [setStyles]);
+  }, [holdDuration, morphDuration, setStyles]);
 
   const doCooldown = useCallback(() => {
     morphRef.current = 0;
     const current1 = text1Ref.current;
     const current2 = text2Ref.current;
     if (!current1 || !current2 || phrases.length === 0) return;
-    current2.style.filter = "none";
-    current2.style.opacity = "100%";
+
+    // Keep showing the phrase that just finished morphing in. The index was
+    // already advanced, so that phrase is phrases[index], NOT phrases[index + 1].
+    // (Showing index + 1 here made the old phrase pop back in after each morph.)
+    const settled = phrases[textIndexRef.current % phrases.length];
     current1.style.filter = "none";
-    current1.style.opacity = "0%";
-    current1.textContent = phrases[textIndexRef.current % phrases.length];
-    current2.textContent = phrases[(textIndexRef.current + 1) % phrases.length];
+    current1.style.opacity = "100%";
+    current2.style.filter = "none";
+    current2.style.opacity = "0%";
+    current1.textContent = settled;
+    current2.textContent = settled;
   }, [phrases]);
 
   useEffect(() => {
@@ -70,8 +98,10 @@ export function MorphingText({ texts, className, animate = true }: MorphingTextP
     const current2 = text2Ref.current;
     if (!current1 || !current2 || phrases.length === 0) return;
 
-    let reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let reducedMotion = motionQuery.matches;
     let animationFrameId = 0;
+
     const setInitialText = () => {
       textIndexRef.current = 0;
       morphRef.current = 0;
@@ -91,25 +121,24 @@ export function MorphingText({ texts, className, animate = true }: MorphingTextP
       if (!timeRef.current) timeRef.current = now;
       const delta = Math.min((now - timeRef.current) / 1000, 0.1);
       timeRef.current = now;
-      cooldownRef.current -= delta;
       if (cooldownRef.current <= 0) {
         morphRef.current += delta;
         doMorph();
       } else {
+        cooldownRef.current = Math.max(0, cooldownRef.current - delta);
         doCooldown();
       }
       animationFrameId = requestAnimationFrame(animateFrame);
     };
     const start = () => {
       stop();
-      if (!animate || reducedMotion || phrases.length < 2) {
-        setInitialText();
-        return;
-      }
+      setInitialText();
+      if (!animate || reducedMotion || phrases.length < 2) return;
+      // Hold the first phrase before the first morph begins.
+      cooldownRef.current = holdDuration;
       timeRef.current = 0;
       animationFrameId = requestAnimationFrame(animateFrame);
     };
-    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const onMotionChange = (event: MediaQueryListEvent) => {
       reducedMotion = event.matches;
       start();
@@ -121,7 +150,7 @@ export function MorphingText({ texts, className, animate = true }: MorphingTextP
       stop();
       motionQuery.removeEventListener("change", onMotionChange);
     };
-  }, [animate, doCooldown, doMorph, phrases]);
+  }, [animate, doCooldown, doMorph, holdDuration, phrases]);
 
   const accessibleText = phrases[0] ?? "";
 
