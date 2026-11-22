@@ -11,6 +11,9 @@ release/
 
 # User data (profiles, auth) — never commit
 data/
+# Public website source modules; these are build inputs, not user data.
+!website/src/data/
+!website/src/data/**
 
 # Phase-based dev/QA scratch (build/test runs)
 phase*-results.json
