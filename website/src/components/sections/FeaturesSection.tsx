@@ -597,7 +597,7 @@ export function FeaturesSection() {
   }, [active]);
 
   return (
-    <section ref={rootRef} className="fs-section" aria-labelledby="fs-heading">
+    <section id="features" ref={rootRef} className="fs-section" aria-labelledby="fs-heading">
       <style>{CSS}</style>
 
       <div className="fs-inner">
