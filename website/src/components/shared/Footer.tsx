@@ -8,33 +8,29 @@ import { FOOTER_COLUMNS } from "../../data/footer";
 
 export function Footer() {
   return (
-    <footer className="w-full bg-[var(--bg-primary)] border-t border-[var(--border-subtle)] pt-16 pb-12 transition-colors">
+    <footer className="site-footer">
       <Container variant="wide">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-16">
+        <div className="site-footer-grid">
           {/* Brand Info Column */}
-          <div className="lg:col-span-2 flex flex-col items-start pr-0 lg:pr-12">
-            <a href="#top" className="flex items-center gap-3 mb-4 select-none">
+          <div className="site-footer-brand">
+            <a href="#top" className="site-footer-logo" aria-label="Gaan home">
               <img
                 src="/brand/gaan-icon.png"
                 alt="Gaan logo"
                 className="size-10 object-contain rounded-xl"
               />
-              <span className="text-2xl font-bold tracking-tight text-[var(--text-primary)]">
-                gaan
-              </span>
+              <span>gaan</span>
             </a>
 
-            <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed max-w-sm mb-6">
+            <p className="site-footer-description">
               A free, open-source music player for your local library, online listening,
               synced lyrics and playlists.
             </p>
 
-            <div className="flex items-center gap-4 text-xs text-[var(--text-muted)]">
-              <span>Free Forever</span>
-              <span>•</span>
-              <span>Open Source</span>
-              <span>•</span>
-              <span>Local-first</span>
+            <div className="site-footer-values" aria-label="Gaan values">
+              <span>Free forever</span>
+              <span>Open source</span>
+              <span>Local first</span>
             </div>
 
             <div className="mt-6">
@@ -44,11 +40,11 @@ export function Footer() {
 
           {/* Links Columns from typed data */}
           {FOOTER_COLUMNS.map((col) => (
-            <div key={col.title} className="flex flex-col gap-3">
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[var(--text-primary)]">
+            <nav key={col.title} className="site-footer-column" aria-label={col.title}>
+              <h2>
                 {col.title}
-              </h4>
-              <ul className="flex flex-col gap-2.5 p-0 m-0 list-none text-sm text-[var(--text-secondary)]">
+              </h2>
+              <ul>
                 {col.links.map((link) => (
                   <li key={link.label}>
                     {link.isExternal ? (
@@ -61,7 +57,7 @@ export function Footer() {
                     ) : (
                       <a
                         href={link.href}
-                        className="transition-colors hover:text-[var(--text-primary)]"
+                        className="site-footer-link"
                       >
                         {link.label}
                       </a>
@@ -69,14 +65,15 @@ export function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t border-[var(--border-subtle)] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-muted)]">
-          <p>© {new Date().getFullYear()} Gaan Music Player. Built with open-source love.</p>
-          <div className="flex items-center gap-6">
+        <div className="site-footer-bottom">
+          <p>© {new Date().getFullYear()} Gaan Music Player</p>
+          <a className="site-footer-domain" href="https://gaan.website/">gaan.website</a>
+          <div className="site-footer-legal">
             <a
               href="https://github.com/rumman2004/Gaan-Desktop/blob/main/LICENSE"
               target="_blank"
