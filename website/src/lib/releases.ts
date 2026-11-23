@@ -103,7 +103,7 @@ export function useReleases(enabled = true) {
           }));
 
           const arm64Asset = assets.find((a) => a.name.toLowerCase().includes('arm64') && a.name.endsWith('.apk'));
-          const universalAsset = assets.find((a) => a.name === 'Gaan.apk' || a.name.endsWith('.apk'));
+          const universalAsset = assets.find((a) => a.name.toLowerCase() === 'gaan.apk');
 
           mobileResult = {
             tag,
