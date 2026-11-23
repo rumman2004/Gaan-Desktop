@@ -18,7 +18,7 @@ function sumAssetDownloads(
       const name = (asset.name ?? "").toLowerCase();
       const isAppPackage =
         platform === "android"
-          ? name.endsWith(".apk")
+          ? name.endsWith(".apk") || name.endsWith(".zip")
           : name.endsWith(".exe") || name.endsWith(".dmg") || name.endsWith(".zip");
 
       return total + (isAppPackage ? Math.max(0, asset.download_count ?? 0) : 0);
