@@ -62,6 +62,7 @@ function AnimatedNumber({ value }: { value: number }) {
 export function DownloadCounter() {
   const [totals, setTotals] = useState<DownloadTotals>(EMPTY_TOTALS);
   const [loaded, setLoaded] = useState(false);
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -94,10 +95,14 @@ export function DownloadCounter() {
         if (!cancelled) {
           setTotals({ android, desktop, total: android + desktop });
           setLoaded(true);
+          setHasError(false);
         }
       } catch (error) {
         console.warn("Unable to load Gaan download statistics:", error);
-        if (!cancelled) setLoaded(true);
+        if (!cancelled) {
+          setLoaded(true);
+          setHasError(true);
+        }
       }
     };
 
@@ -123,18 +128,18 @@ export function DownloadCounter() {
             aria-live="polite"
             aria-label={loaded ? `${totals.total.toLocaleString("en-IN")} total downloads` : "Loading download count"}
           >
-            {loaded ? <AnimatedNumber value={totals.total} /> : <span className="inline-block h-12 w-28 animate-pulse rounded-lg bg-[var(--bg-secondary)] align-middle" />}
+            {loaded && !hasError ? <AnimatedNumber value={totals.total} /> : hasError ? <span className="text-base font-medium">Unavailable</span> : <span className="inline-block h-12 w-28 animate-pulse rounded-lg bg-[var(--bg-secondary)] align-middle" />}
             <span className="ml-2 text-xl font-semibold text-[var(--text-secondary)] sm:text-2xl">+</span>
           </div>
           <p className="mt-2 text-sm text-[var(--text-secondary)]">
             Downloads across Android, Windows and macOS
           </p>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-x-7 gap-y-2 text-xs text-[var(--text-muted)]">
-            <span><strong className="font-semibold text-[var(--text-primary)]"><AnimatedNumber value={totals.android} /></strong> Android</span>
-            <span><strong className="font-semibold text-[var(--text-primary)]"><AnimatedNumber value={totals.desktop} /></strong> Desktop</span>
+            <span><strong className="font-semibold text-[var(--text-primary)]">{loaded && !hasError ? <AnimatedNumber value={totals.android} /> : "—"}</strong> Android</span>
+            <span><strong className="font-semibold text-[var(--text-primary)]">{loaded && !hasError ? <AnimatedNumber value={totals.desktop} /> : "—"}</strong> Desktop</span>
           </div>
           <p className="mt-4 text-[10px] text-[var(--text-muted)]">
-            Live totals from official GitHub release assets · refreshes every 5 minutes
+            GitHub-reported release downloads · refreshes every 5 minutes
           </p>
         </div>
       </div>
