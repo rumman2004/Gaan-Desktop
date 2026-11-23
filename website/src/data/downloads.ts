@@ -127,7 +127,7 @@ export const DOWNLOAD_PLATFORMS: Record<TargetPlatform, PlatformDownloadInfo> = 
       {
         step: 1,
         title: "Download APK",
-        instruction: "Download the recommended ARM64 APK directly to your Android device.",
+        instruction: "Download the recommended Universal APK directly to your Android device.",
       },
       {
         step: 2,
