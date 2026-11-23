@@ -8,7 +8,7 @@ import { Badge } from "../ui/Badge";
 import { Card } from "../ui/Card";
 import { CalendarDays, ExternalLink, PackageCheck, ShieldCheck } from "@/components/ui/animated-icons";
 import { formatDate } from "../../lib/utils";
-import Dither from "../magicui/dither";
+import Lightfall from "../backgrounds/Lightfall";
 import { HyperText } from "../magicui/hyper-text";
 import { DownloadCounter } from "../features/DownloadCounter";
 
@@ -22,24 +22,29 @@ export function DownloadSection({ initialPlatform = "windows" }: DownloadSection
   const releaseDate = releases.desktop.publishedAt ? formatDate(releases.desktop.publishedAt) : "See release page";
   const installerSize = desktopInstaller ? `${(desktopInstaller.size / (1024 * 1024)).toFixed(1)} MB` : "See selected package";
   return (
-    <Section id="downloads" className="download-section relative isolate overflow-hidden py-12 sm:py-20 lg:py-28 border-t border-[var(--border-subtle)] bg-[var(--bg-secondary)]/30">
-      <Dither
+    <Section id="downloads" className="download-section relative isolate overflow-hidden py-12 sm:py-20 lg:py-28 border-t border-[var(--border-subtle)] !bg-transparent">
+      <Lightfall
         aria-hidden="true"
-        className="download-dither absolute inset-0 z-0"
-        waveSpeed={0.24}
-        waveFrequency={0.8}
-        waveAmplitude={0.42}
-        waveColor="#6d28d9"
-        backgroundColor="transparent"
-        colorNum={4}
-        pixelSize={2}
-        ditherMode="bayer"
-        palette={["#4c1d95", "#6d28d9", "#ec4899", "#a78bfa"]}
-        scale={1}
-        contrast={1}
-        brightness={1}
-        enableMouseInteraction={false}
+        className="!absolute inset-0 z-0"
+        colors={["#6d28d9", "#ec4899", "#a78bfa"]}
+        backgroundColor="#0d0d0d"
+        speed={0.3}
+        streakCount={3}
+        streakWidth={0.8}
+        streakLength={1}
+        glow={1}
+        density={0.6}
+        twinkle={0.3}
+        zoom={3}
+        backgroundGlow={0.1}
+        headGlow={0.6}
+        depth={0.5}
+        bloom={0.35}
+        opacity={1}
+        mouseInteraction
+        mouseStrength={0.4}
         intro
+        fade={0.15}
       />
       <Container variant="wide" className="relative z-10">
         <SectionHeader
@@ -53,7 +58,8 @@ export function DownloadSection({ initialPlatform = "windows" }: DownloadSection
         <DownloadCounter />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
-          <Card variant="outlined" className="lg:col-span-4 p-4 sm:p-8 flex flex-col gap-5 sm:gap-6">
+          <Card variant="outlined" style={{ backgroundColor: "color-mix(in srgb, var(--bg-card) 80%, transparent)" }}
+            className="lg:col-span-4 p-4 sm:p-8 flex flex-col gap-5 sm:gap-6">
             <div>
               <p className="text-xs uppercase tracking-[.14em] text-[var(--text-muted)] font-semibold mb-3">Release information</p>
               <div className="flex items-center gap-3"><h3 className="text-2xl font-bold tracking-tight">{releases.desktop.tag}</h3><Badge variant="version">Latest</Badge></div>

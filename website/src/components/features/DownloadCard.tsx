@@ -74,8 +74,9 @@ export function DownloadCard({
   return (
     <Card
       variant="outlined"
+      style={{ backgroundColor: "color-mix(in srgb, var(--bg-card) 80%, transparent)" }}
       className={cn(
-        "p-6 sm:p-10 bg-[var(--bg-card)] border border-[var(--border-default)] shadow-[var(--shadow-hover)] flex flex-col gap-8 sm:gap-10",
+        "p-6 sm:p-10 border border-[var(--border-default)] shadow-[var(--shadow-hover)] flex flex-col gap-8 sm:gap-10",
         className
       )}
     >
