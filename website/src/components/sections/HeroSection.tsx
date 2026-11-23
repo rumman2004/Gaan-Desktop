@@ -161,17 +161,6 @@ export function HeroSection({ detectedOS }: { detectedOS: Platform }) {
               </span>
             </div>
           </div>
-
-          <div className="hero-art">
-            <img
-              src="/brand/SEO.jpg"
-              alt="Gaan music player for Windows and macOS"
-              width={1280}
-              height={512}
-              fetchPriority="high"
-              decoding="async"
-            />
-          </div>
         </div>
       </Container>
     </Section>
