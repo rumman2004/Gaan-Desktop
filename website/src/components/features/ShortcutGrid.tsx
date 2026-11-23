@@ -1,51 +1,58 @@
-import React, { useState } from "react";
-import { cn } from "../../lib/utils";
-import { ShortcutCard } from "./ShortcutCard";
-import { Tabs } from "../ui/Tabs";
-import { SHORTCUT_GROUPS } from "../../data/shortcuts";
+import type { ReactNode } from "react";
 
-export interface ShortcutGridProps {
-  className?: string;
+type Shortcut = { keys: string; label: string };
+
+const SHORTCUTS: Shortcut[] = [
+  { keys: "Space", label: "Play / Pause" },
+  { keys: "← →", label: "Seek 5 s" },
+  { keys: "↑ ↓", label: "Volume" },
+  { keys: "S", label: "Shuffle" },
+  { keys: "R", label: "Repeat" },
+  { keys: "Q", label: "Queue" },
+  { keys: "L", label: "Lyrics" },
+  { keys: "/", label: "Search" },
+  { keys: "N", label: "Now Playing" },
+];
+
+function Key({ children, className = "" }: { children: ReactNode; className?: string }) {
+  return (
+    <kbd
+      className={`inline-flex items-center justify-center gap-1.5 min-w-6 h-6 sm:min-w-8 sm:h-8 px-1.5 sm:px-2.5 rounded-md border border-[var(--border-default)] bg-[var(--bg-card)] text-[var(--text-primary)] font-sans text-[11px] sm:text-sm font-semibold shadow-[0_1px_0_var(--border-default)] whitespace-nowrap ${className}`}
+    >
+      {children}
+    </kbd>
+  );
 }
 
-export function ShortcutGrid({ className }: ShortcutGridProps) {
-  const [platform, setPlatform] = useState<"win" | "mac">("win");
-
+export function ShortcutGrid() {
   return (
-    <div className={cn("w-full flex flex-col gap-6", className)}>
-      <div className="flex items-center justify-between gap-4">
-        <h3 className="text-base sm:text-lg font-bold tracking-tight text-[var(--text-primary)]">
-          Keyboard Shortcuts & Hotkeys
+    <div className="min-w-0">
+      <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-3 sm:mb-5">
+        <h3 className="text-lg sm:text-2xl font-bold tracking-tight text-[var(--text-primary)]">
+          Keyboard Shortcuts
         </h3>
-        <Tabs
-          tabs={[
-            { id: "win", label: "Windows" },
-            { id: "mac", label: "macOS" },
-          ]}
-          activeTab={platform}
-          onChange={(p) => setPlatform(p as "win" | "mac")}
-          variant="pill"
-          size="sm"
-        />
+        <span className="inline-flex items-center rounded-full border border-[var(--border-default)] bg-[var(--bg-card)] px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-medium text-[var(--text-secondary)]">
+          Essential Controls
+        </span>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {SHORTCUT_GROUPS.map((group) => (
-          <div key={group.category} className="flex flex-col gap-2.5">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[var(--text-muted)] mb-1">
-              {group.category}
-            </h4>
-            {group.shortcuts.map((sc) => (
-              <ShortcutCard
-                key={sc.action}
-                action={sc.action}
-                description={sc.description}
-                keys={platform === "win" ? sc.keysWin : sc.keysMac}
-              />
-            ))}
-          </div>
+      <ul className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
+        {SHORTCUTS.map((s) => (
+          <li
+            key={s.label}
+            className="flex items-center gap-2 sm:gap-3 min-w-0 rounded-xl border border-[var(--border-default)] bg-[var(--bg-card)] px-2 py-2 sm:px-2.5 sm:py-3 shadow-[var(--shadow-card)]"
+          >
+            <Key className="shrink-0">{s.keys}</Key>
+            <span className="text-xs sm:text-sm text-[var(--text-primary)] truncate">{s.label}</span>
+          </li>
         ))}
-      </div>
+      </ul>
+
+      <p className="mt-4 text-xs sm:text-sm leading-loose text-[var(--text-secondary)] max-w-xl">
+        Plus <Key>Shift + ←/→</Key> for previous and next, <Key>M</Key> to mute, and{" "}
+        <strong className="font-semibold text-[var(--text-primary)]">two-finger swipes</strong> or{" "}
+        <Key>Alt + ←/→</Key> (or the mouse's side buttons) to go back and forward.
+      </p>
     </div>
   );
 }

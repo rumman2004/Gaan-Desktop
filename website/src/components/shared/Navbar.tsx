@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, ChevronDown } from "@/components/ui/animated-icons";
+import { ChevronDown } from "@/components/ui/animated-icons";
 import { DownloadIcon as AnimatedDownload } from "../ui/download";
 import { GithubIcon as AnimatedGithub } from "../ui/github";
 import { ThemeToggle } from "./ThemeToggle";
@@ -7,6 +7,7 @@ import { Button } from "../ui/Button";
 import { IconButton } from "../ui/IconButton";
 import { Dropdown } from "../ui/Dropdown";
 import { cn } from "../../lib/utils";
+import { useReleases } from "../../lib/releases";
 
 export interface NavbarProps {
   className?: string;
@@ -15,6 +16,7 @@ export interface NavbarProps {
 export function Navbar({ className }: NavbarProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
+  const releases = useReleases();
 
   const navLinks = [
     { label: "The Player", href: "#player" },
@@ -32,28 +34,28 @@ export function Navbar({ className }: NavbarProps) {
       key: "windows",
       label: "Windows (x64 Installer)",
       onClick: () => {
-        window.location.href = "https://github.com/rumman2004/Gaan-Desktop/releases/latest";
+        window.location.href = releases.desktop.windowsExeUrl;
       },
     },
     {
       key: "mac-arm",
       label: "macOS (Apple Silicon)",
       onClick: () => {
-        window.location.href = "https://github.com/rumman2004/Gaan-Desktop/releases/latest";
+        window.location.href = releases.desktop.macArm64DmgUrl;
       },
     },
     {
       key: "mac-intel",
       label: "macOS (Intel)",
       onClick: () => {
-        window.location.href = "https://github.com/rumman2004/Gaan-Desktop/releases/latest";
+        window.location.href = releases.desktop.macX64DmgUrl;
       },
     },
     {
       key: "android",
       label: "Android APK (Mobile)",
       onClick: () => {
-        window.location.href = "https://github.com/rumman2004/Gaan/releases/latest";
+        window.location.href = releases.mobile.apkArm64Url;
       },
     },
   ];
@@ -156,7 +158,24 @@ export function Navbar({ className }: NavbarProps) {
           {/* Mobile menu trigger */}
           <div className="xl:hidden">
             <IconButton
-              icon={menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+              icon={
+                <svg
+                  className="size-5"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  {menuOpen ? (
+                    <path d="M18 6 6 18M6 6l12 12" />
+                  ) : (
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              }
               aria-label="Toggle navigation menu"
               aria-expanded={menuOpen}
               aria-controls="mobile-site-navigation"

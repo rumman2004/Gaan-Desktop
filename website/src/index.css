@@ -230,7 +230,6 @@ html {
 .has-react-bits-background { position: relative; isolation: isolate; }
 .has-react-bits-background > :not(.react-bits-background-layer) { position: relative; z-index: 1; }
 
-.download-dither { color: var(--text-primary); opacity: 0.34; }
 
 @keyframes theme-icon-enter {
   from { opacity: 0.45; transform: rotate(-30deg) scale(0.75); }
